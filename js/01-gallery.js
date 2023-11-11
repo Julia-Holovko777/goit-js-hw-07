@@ -9,6 +9,7 @@ const createGalleryItem = ({ preview, original, description }) => {
     <a class="gallery__link" href="${original}">
     <img class="gallery__image"
         src="${preview}"
+        data-source="${original}"
         alt="${description}" />
     </a>
     </li>
@@ -22,9 +23,10 @@ galleryList.addEventListener("click", (event) => {
   event.preventDefault();
   const target = event.target;
   if (target.classList.contains("gallery__image")) {
-    const originalUrl = target.getAttribute("src");
+    const originalUrl = target.getAttribute("data-source");
+
     const instance = basicLightbox.create(
-      `<img src="${originalUrl}" alt="Image" />`,
+      `<img src="${originalUrl}" width="800" height="600">`,
       {
         onShow: () => {
           window.addEventListener("keydown", onKeydownEsc);
@@ -34,6 +36,8 @@ galleryList.addEventListener("click", (event) => {
         },
       }
     );
+    instance.show();
+
     function closeLightbox() {
       instance.close();
     }
@@ -42,7 +46,6 @@ galleryList.addEventListener("click", (event) => {
         closeLightbox();
       }
     }
-    instance.show();
   }
 });
 
